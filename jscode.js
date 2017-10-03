@@ -72,6 +72,24 @@
                  expect (result.errors[0].message).to.equal('Alice222 is not a valid first-name value');
                 
           })
+          
+          it("should return validation error when age input is not valid", function () {
+                const notValidName = form.querySelector('input[name="first-name"]');
+                const age = form.querySelector('input[name="age"]');
+                
+                notValidName.value = "Alice";
+                age.value = "25abc";
+                
+                const result = validateForm(form);
+                const isFormValid = result.isValid;
+                const errors = result.errors;
+                
+                 expect (isFormValid).to.be.false;
+                 expect (errors.length).to.equal(1);
+                 expect (result.errors[0].message).to.equal('25abc is not a valid age value');
+                
+          });
+          
         });
     });
     
