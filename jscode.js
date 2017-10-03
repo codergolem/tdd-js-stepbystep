@@ -5,25 +5,29 @@
     function validateForm(form) {
         // get the inputs
         let result = {
+            isValid: true,
             errors: []
         };
         
-        let isValid = true;
         const inputs = form.querySelectorAll('input');
         
         for (let input of inputs) {
             if (input.dataset.validation === 'alphabetical') {
-                isValid = isValid && /^[a-z]+$/i.test(input.value);
-                if (!isValid) {
+                if (!/^[a-z]+$/i.test(input.value)) {
                     result.errors.push(new Error(`${input.value} is not a valid ${input.name} value`));
                 }
             }
             if (input.dataset.validation === 'numeric') {
-                isValid = isValid && /^[0-9]+$/i.test(input.value);
+                if (!/^[0-9]+$/i.test(input.value)) {
+                    result.errors.push(new Error(`${input.value} is not a valid ${input.name} value`));
+                }
             }
         }
         
-        result.isValid = isValid;
+        if (result.errors.length > 0 ) {
+            result.isValid = false;
+        }
+      
         return result;
     }
     
@@ -71,8 +75,8 @@
                  expect (errors.length).to.equal(1);
                  expect (result.errors[0].message).to.equal('Alice222 is not a valid first-name value');
                 
-          })
-          
+          });
+            
           it("should return validation error when age input is not valid", function () {
                 const notValidName = form.querySelector('input[name="first-name"]');
                 const age = form.querySelector('input[name="age"]');
@@ -89,7 +93,7 @@
                  expect (result.errors[0].message).to.equal('25abc is not a valid age value');
                 
           });
-          
+            
         });
     });
     
