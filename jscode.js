@@ -13,7 +13,10 @@
         
         for (let input of inputs) {
             if (input.dataset.validation === 'alphabetical') {
-                isValid = isValid && /^[a-z]+$/i.test(input.value);   
+                isValid = isValid && /^[a-z]+$/i.test(input.value);
+                if (!isValid) {
+                    result.errors.push(new Error(`${input.value} is not a valid ${input.name} value`));
+                }
             }
             if (input.dataset.validation === 'numeric') {
                 isValid = isValid && /^[0-9]+$/i.test(input.value);
@@ -66,7 +69,8 @@
                 
                  expect (isFormValid).to.be.false;
                  expect (errors.length).to.equal(1);
-                 expect (result.errors[0].message).to.equal('!!! is not a valid first-name value');
+                 expect (result.errors[0].message).to.equal('Alice222 is not a valid first-name value');
+                
           })
         });
     });
