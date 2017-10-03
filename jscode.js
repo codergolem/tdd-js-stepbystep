@@ -2,6 +2,16 @@
     'use strict';
     
     // Implementation
+    function createValidationQueries (inputs) {
+
+        return Array.from(inputs).map(input => ({
+            name : input.name,
+            value : input.value,
+            type : input.dataset.validation
+        })
+      );
+    }
+    
     function validateForm(form) {
         // get the inputs
         let result = {
@@ -11,15 +21,16 @@
         
         const inputs = form.querySelectorAll('input');
         
-        for (let input of inputs) {
-            if (input.dataset.validation === 'alphabetical') {
-                if (!/^[a-z]+$/i.test(input.value)) {
-                    result.errors.push(new Error(`${input.value} is not a valid ${input.name} value`));
+        
+        for (let validationQuery of createValidationQueries(inputs)) {
+            if (validationQuery.type === 'alphabetical') {
+                if (!/^[a-z]+$/i.test(validationQuery.value)) {
+                    result.errors.push(new Error(`${validationQuery.value} is not a valid ${validationQuery.name} value`));
                 }
             }
-            if (input.dataset.validation === 'numeric') {
-                if (!/^[0-9]+$/i.test(input.value)) {
-                    result.errors.push(new Error(`${input.value} is not a valid ${input.name} value`));
+            if (validationQuery.type === 'numeric') {
+                if (!/^[0-9]+$/i.test(validationQuery.value)) {
+                    result.errors.push(new Error(`${validationQuery.value} is not a valid ${validationQuery.name} value`));
                 }
             }
         }
@@ -30,6 +41,8 @@
       
         return result;
     }
+    
+    
     
     // Test Setup
     mocha.setup('bdd');
