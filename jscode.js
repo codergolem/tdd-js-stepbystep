@@ -36,6 +36,7 @@
         });
         
         describe('the validateForm function', function () {
+            
             it("should evaluate valid inputs as valid", function() {
                 const name = form.querySelector('input[name="first-name"]');
                 const age = form.querySelector('input[name="age"]');
@@ -51,6 +52,22 @@
                 expect (errors.length).to.equal(0);
                 
             });
+          
+            it("should return validation error when name input is not valid", function () {
+                const notValidName = form.querySelector('input[name="first-name"]');
+                const age = form.querySelector('input[name="age"]');
+                
+                notValidName.value = "Alice222";
+                age.value = "25";
+                
+                const result = validateForm(form);
+                const isFormValid = result.isValid;
+                const errors = result.errors;
+                
+                 expect (isFormValid).to.be.false;
+                 expect (errors.length).to.equal(1);
+                 expect (result.errors[0].message).to.equal('!!! is not a valid first-name value');
+          })
         });
     });
     
