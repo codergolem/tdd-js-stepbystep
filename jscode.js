@@ -108,9 +108,33 @@
                 expect(result.errors[0].message).to.equal('!!! is not a valid first-name value');
                 expect(result.errors[1]).to.be.instanceof(Error);
                 expect(result.errors[1].message).to.equal('a is not a valid age value');
-            });
+          });
+       });
+        
+       describe('the createValidationQueries function', function () {
+            
+            it('should map input elements with a data-validation attribute to an array of validation objects',function (){
+                const name = form.querySelector('input[name="first-name"]');
+                const age = form.querySelector('input[name="age"]');
+
+                name.value = 'Bob';
+                age.value = '42';
+
+                const validations = createValidationQueries([name, age]);
+
+                expect(validations.length).to.equal(2);
+
+                expect(validations[0].name).to.equal('first-name');
+                expect(validations[0].type).to.equal('alphabetical');
+                expect(validations[0].value).to.equal('Bob');
+
+                expect(validations[1].name).to.equal('age');
+                expect(validations[1].type).to.equal('numeric');
+                expect(validations[1].value).to.equal('42');
         });
     });
+  });
+
+  mocha.run();
     
-    mocha.run();
 }());
