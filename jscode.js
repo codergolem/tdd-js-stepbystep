@@ -94,6 +94,21 @@
                 
           });
             
+          it('should return multiple errors if more than one field is invalid', function () {
+                const name = form.querySelector('input[name="first-name"]');
+                const age = form.querySelector('input[name="age"]');
+
+                name.value = '!!!';
+                age.value = 'a';
+
+                const result = validateForm(form);
+
+                expect(result.isValid).to.be.false;
+                expect(result.errors[0]).to.be.instanceof(Error);
+                expect(result.errors[0].message).to.equal('!!! is not a valid first-name value');
+                expect(result.errors[1]).to.be.instanceof(Error);
+                expect(result.errors[1].message).to.equal('a is not a valid age value');
+            });
         });
     });
     
